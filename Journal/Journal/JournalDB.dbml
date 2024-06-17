@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="University" Class="JournalDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=University;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False" SettingsObjectName="Journal.Properties.Settings" SettingsPropertyName="UniversityConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Grade" Member="Grade">
+    <Type Name="Grade">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TeacherId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="StudentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SubjectId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Teacher_Grade" Member="Teacher" ThisKey="TeacherId" OtherKey="Id" Type="Teacher" IsForeignKey="true" />
+      <Association Name="Subjects_Grade" Member="Subjects" ThisKey="SubjectId" OtherKey="Id" Type="Subjects" IsForeignKey="true" />
+      <Association Name="Student_Grade" Member="Student" ThisKey="StudentId" OtherKey="Id" Type="Student" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Auditories" Member="Auditories">
+    <Type Name="Auditories">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Number" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Auditories_TimeTable" Member="TimeTable" ThisKey="Id" OtherKey="AuditoriesId" Type="TimeTable" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Groups" Member="Groups">
+    <Type Name="Groups">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TimeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="TimeTable_Groups" Member="TimeTable" ThisKey="TimeId" OtherKey="Id" Type="TimeTable" IsForeignKey="true" />
+      <Association Name="Subjects_Groups" Member="Subjects" ThisKey="SubjectId" OtherKey="Id" Type="Subjects" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TimeTable" Member="TimeTable">
+    <Type Name="TimeTable">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Date_Time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="AuditoriesId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SubjectId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TeacherId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="TimeTable_Groups" Member="Groups" ThisKey="Id" OtherKey="TimeId" Type="Groups" />
+      <Association Name="Auditories_TimeTable" Member="Auditories" ThisKey="AuditoriesId" OtherKey="Id" Type="Auditories" IsForeignKey="true" />
+      <Association Name="Teacher_TimeTable" Member="Teacher" ThisKey="TeacherId" OtherKey="Id" Type="Teacher" IsForeignKey="true" />
+      <Association Name="Subjects_TimeTable" Member="Subjects" ThisKey="SubjectId" OtherKey="Id" Type="Subjects" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Teacher" Member="Teacher">
+    <Type Name="Teacher">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="Teacher_Grade" Member="Grade" ThisKey="Id" OtherKey="TeacherId" Type="Grade" />
+      <Association Name="Teacher_TimeTable" Member="TimeTable" ThisKey="Id" OtherKey="TeacherId" Type="TimeTable" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Subjects" Member="Subjects">
+    <Type Name="Subjects">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Association Name="Subjects_Grade" Member="Grade" ThisKey="Id" OtherKey="SubjectId" Type="Grade" />
+      <Association Name="Subjects_Groups" Member="Groups" ThisKey="Id" OtherKey="SubjectId" Type="Groups" />
+      <Association Name="Subjects_TimeTable" Member="TimeTable" ThisKey="Id" OtherKey="SubjectId" Type="TimeTable" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Student" Member="Student">
+    <Type Name="Student">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="GroupId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Student_Grade" Member="Grade" ThisKey="Id" OtherKey="StudentId" Type="Grade" />
+    </Type>
+  </Table>
+</Database>
